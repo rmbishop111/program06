@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <script
+                src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+                integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+                crossorigin="anonymous">
+            </script>
+    </head>
+<body>
+
+<h1>Assignment 6</h1>
+
+<p id="demo">Let AJAX change this text.</p>
+
+<button type="button" onclick="showByRoom(obj);">Show Data</button>
+
+
+<script>
+rt = " ";
+obj = [];
+
+$("document").ready(function() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo").innerHTML = "data ready...";
+      rt = this.responseText;
+      obj = JSON.parse(rt); 
+    }
+  };
+  xhttp.open("GET", "junk.txt", true);
+  xhttp.send();
+});
+
+
+function sortByRoom(obj){
+    newArray = []
+    // for(var i =0; i < obj.courses.length ; i++){
+    //     newArray.push(obj.courses[i].prefix + " " + obj.courses[i].courseNumber + " " + obj.courses[i].meetingTimes[0].building + " " + obj.courses[i].meetingTimes[0].room)
+    //     // document.write(newArray[i] + "<br />")
+    // }
+    // document.write(newArray.length + "<br />")
+    var obj2 = $.makeArray(obj)
+    newArray = $(obj2.courses).map(function(x){
+       return x.prefix + " " + x.courseNumber + " " + x.meetingTimes[0].building + " " + x.meetingTimes[0].room
+    })
+    newArray.sort()
+    return newArray
+}
+function showByRoom(){
+    sortByRoom(obj);
+    xx = "";
+    for(var i =0; i < newArray.length ; i++){
+        xx = xx + newArray[i] + "<br />"
+    };
+    document.getElementById("demo").innerHTML = xx
+}
+
+
+</script>
+
+</body>
+</html>
