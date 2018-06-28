@@ -15,6 +15,57 @@
 <br>
 <br>
 <button id="reset" type="button" onclick="showByRoom(newArray);">Reset</button>
+<br><br>
+<p>
+    <strong>(a) Origin Policy</strong>
+    
+        <p style="padding-right: 50%; margin-left: 30px">The <i>Same Origin Policy</i> is helpful in keeping sites secure, not allowing sites to have malicious code accessing other sites.  For example, if you have a social media site open in your browser and an 'evil' site in another browser tab, the Same Origin Policy does not allow the malicious site to access data from the social media site.  This also helps keep banking and other information on the web secure.
+        </p>
+
+    <strong>(b) Callback Functions</strong>
+
+        <p style="padding-right: 50%; margin-left: 30px">A <i>Callback Function</i> is a function that is passed as a parameter into another function, then called within that function. In the below code, which I used to randomize the colors, I believe the function passed into $.map is a callback. I am not quite sure. I am still trying to understand it completely.
+<pre style="margin-left: 50px">
+$.map(arr, function(n, i){
+str = n.toString();
+console.log(str);
+$("#demo2").append("<div id='div" + i + "'>" + str + "<div/>");
+$("#div" + i).css('color', random_rgb());
+
+function random_rgb() {
+    colors = ['8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+    r = colors[Math.floor(Math.random() * 8)];
+    g = colors[Math.floor(Math.random() * 8)];
+    b = colors[Math.floor(Math.random() * 8)];
+    return '#' + r + g + b;
+</pre>
+    <p style="padding-right: 50%; margin-left: 30px">
+        So, If I would have created a function "myFunction" and passed it into $.map instead of writing out the function as a parameter, it might better define the callback... I think:
+    </p>
+ <pre style="margin-left: 50px">
+ $.map(arr, myFunction)
+ 
+ function myFunction(n, i){
+    str = n.toString();
+    console.log(str);
+    $("#demo2").append("<div id='div" + i + "'>" + str + "<div/>");
+    $("#div" + i).css('color', random_rgb());
+ 
+ function random_rgb() {
+     colors = ['8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+     r = colors[Math.floor(Math.random() * 8)];
+     g = colors[Math.floor(Math.random() * 8)];
+     b = colors[Math.floor(Math.random() * 8)];
+     return '#' + r + g + b;
+ </pre>
+
+        <p style="padding-right: 50%; margin-left: 30px">
+            I may need to study this more to get a better understanding.
+        </p>
+        </p>
+
+        
+</p>
 
 <script>
 
