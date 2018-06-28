@@ -1,61 +1,100 @@
 <!DOCTYPE html>
 <html>
     <head>
-            <script
-                src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-                integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
-                crossorigin="anonymous">
-            </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     </head>
 <body>
 
 <h1>Assignment 6</h1>
 
-<p id="demo">Let AJAX change this text.</p>
-
-<button type="button" onclick="showByRoom(obj);">Show Data</button>
-
+<p id="demo">Loading...</p>
+<div id="demo2"></div>
+<button id="showData" type="button" onclick="sortByRoom(obj);">Show Data</button>
+<button id="sortData" type="button" onclick="showByRoom(newArray);">Sort Data</button>
+<button id="changeColor" type="button" onclick="showByRoom(newArray);">Change Colors</button>
+<br>
+<br>
+<button id="reset" type="button" onclick="showByRoom(newArray);">Reset</button>
 
 <script>
-rt = " ";
-obj = [];
 
-$("document").ready(function() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      document.getElementById("demo").innerHTML = "data ready...";
-      rt = this.responseText;
-      obj = JSON.parse(rt); 
+    rt = " ";
+    obj = [];
+    
+
+    $("document").ready(function() {
+        newArray = []
+        document.getElementById("sortData").style.visibility = "hidden";
+        document.getElementById("changeColor").style.visibility = "hidden";
+
+        $('#reset').click(function() {
+            location.reload();
+        });
+
+        $("#showData").click(function(){
+            $(this).hide();
+            document.getElementById("sortData").style.visibility = "visible";
+        });
+
+        $("#sortData").click(function(){
+            $(this).hide();
+            document.getElementById("changeColor").style.visibility = "visible";
+        });
+
+
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("demo").innerHTML = "data ready...";
+            rt = this.responseText;
+            obj = JSON.parse(rt); 
+            }
+        };
+        xhttp.open("GET", "junk.txt", true);
+        xhttp.send();
+
+        return obj;
+        
+        
+    });
+
+
+    function sortByRoom(obj){
+        xx = ""
+        newArray = $.map(obj.courses, function(n){
+            xx = xx + n.prefix + " " + n.courseNumber + " " + n.meetingTimes[0].building + " " + n.meetingTimes[0].room + "<br>"
+            return n.prefix + " " + n.courseNumber + " " + n.meetingTimes[0].building + " " + n.meetingTimes[0].room
+        });
+        document.getElementById("demo").innerHTML = xx
+        newArray.sort()
+        return newArray
+
     }
-  };
-  xhttp.open("GET", "junk.txt", true);
-  xhttp.send();
-});
 
+    function showByRoom(arr){
+        xx = ""
+        var str
+        document.getElementById("demo").innerHTML = ""
+        document.getElementById("demo2").innerHTML = ""
+        $("#demo2").css('background', 'gray');
+        $("#demo2").css('margin-right', '90%');
+        $("#changeColor").css('margin-top', '25px');
+        $.map(arr, function(n, i){
+            str = n.toString();
+            console.log(str);
+            $("#demo2").append("<div id='div" + i + "'>" + str + "<div/>");
+            $("#div" + i).css('color', random_rgb());
+            // $("#p" + i).css('background', random_rgb());
+        });
+    }
 
-function sortByRoom(obj){
-    newArray = []
-    // for(var i =0; i < obj.courses.length ; i++){
-    //     newArray.push(obj.courses[i].prefix + " " + obj.courses[i].courseNumber + " " + obj.courses[i].meetingTimes[0].building + " " + obj.courses[i].meetingTimes[0].room)
-    //     // document.write(newArray[i] + "<br />")
-    // }
-    // document.write(newArray.length + "<br />")
-    var obj2 = $.makeArray(obj)
-    newArray = $(obj2.courses).map(function(x){
-       return x.prefix + " " + x.courseNumber + " " + x.meetingTimes[0].building + " " + x.meetingTimes[0].room
-    })
-    newArray.sort()
-    return newArray
-}
-function showByRoom(){
-    sortByRoom(obj);
-    xx = "";
-    for(var i =0; i < newArray.length ; i++){
-        xx = xx + newArray[i] + "<br />"
-    };
-    document.getElementById("demo").innerHTML = xx
-}
+    function random_rgb() {
+        colors = ['8', '9', 'a', 'b', 'c', 'd', 'e', 'f'];
+        r = colors[Math.floor(Math.random() * 8)];
+        g = colors[Math.floor(Math.random() * 8)];
+        b = colors[Math.floor(Math.random() * 8)];
+        return '#' + r + g + b;
+};
 
 
 </script>
